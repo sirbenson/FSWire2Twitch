@@ -1,0 +1,9 @@
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\bin\Debug\FSWire2Twitch.exe.config
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\bin\Debug\FSWire2Twitch.exe
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\bin\Debug\FSWire2Twitch.pdb
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.csprojResolveAssemblyReference.cache
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.Form1.resources
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.Properties.Resources.resources
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.csproj.GenerateResource.Cache
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.exe
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.pdb
