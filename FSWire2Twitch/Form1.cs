@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 
 namespace FSWire2Twitch
 {
@@ -50,6 +53,27 @@ namespace FSWire2Twitch
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
+            if(timer.Enabled)
+            {
+                buttonStart.BackColor = Color.Green;
+                buttonStart.Text = "Start";
+
+                timer.Enabled = false;
+                timer.Stop();
+
+                textBoxOutputDir.Enabled = true;
+                textBoxUsername.Enabled = true;
+                comboBoxFlightStatus.Enabled = true;
+                listBoxFlightStatus.Enabled = true;
+                buttonSaveFlightStatus.Enabled = true;
+                buttonSelectOutput.Enabled = true;
+                buttonDeleteStatus.Enabled = true;
+
+                toolStripStatusLabel.Text = "Not running";
+
+                return;
+            }
+
             if (textBoxUsername.Text.Length < 1)
             {
                 MessageBox.Show("You must set your username from FSWire!", "FSWire2Twitch error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -62,7 +86,28 @@ namespace FSWire2Twitch
                 return;
             }
 
+            if(!Directory.Exists(textBoxOutputDir.Text + "/FSWire2Twitch"))
+            {
+                Directory.CreateDirectory(textBoxOutputDir.Text + " /FSWire2Twitch");
+            }
+
+            textBoxOutputDir.Enabled = false;
+            textBoxUsername.Enabled = false;
+            comboBoxFlightStatus.Enabled = false;
+            listBoxFlightStatus.Enabled = false;
+            buttonSaveFlightStatus.Enabled = false;
+            buttonSelectOutput.Enabled = false;
+            buttonDeleteStatus.Enabled = false;
+
+            toolStripStatusLabel.Text = "Running. Intervall: 10 seconds";
+
+            buttonStart.BackColor = Color.Red;
+            buttonStart.Text = "Stop";
+
             ReadJson();
+
+            timer.Enabled = true;
+            timer.Start();
         }
 
         private void buttonSelectOutput_Click(object sender, EventArgs e)
@@ -95,17 +140,16 @@ namespace FSWire2Twitch
 
                     if (username == textBoxUsername.Text)
                     {
-
-                        string airplaneHeading = jsonUser.Value<string>("heading");
-                        string airplaneAltitude = jsonUser.Value<string>("altitude");
-                        string airplaneGroundspeed = jsonUser.Value<string>("groundspeed");
-                        string airplanePhase = jsonUser.Value<string>("phase");
-                        string flightDistRemain = jsonUser.Value<string>("distremain");
-                        string timeRemain = jsonUser.Value<string>("timeremaining");
+                        string airplaneHeading = x.Value<string>("heading");
+                        string airplaneAltitude = x.Value<string>("altitude");
+                        string airplaneGroundspeed = x.Value<string>("groundspeed");
+                        string airplanePhase = x.Value<string>("phase");
+                        string flightDistRemain = x.Value<string>("distremain");
+                        string timeRemain = x.Value<string>("timeremaining");
 
                         var jsonBid = x.Value<JToken>("bid");
 
-                        string flightNumer = jsonBid.Value<string>("flightnum");
+                        string flightNumber = jsonBid.Value<string>("flightnum");
                         string flightDepTime = jsonBid.Value<string>("deptime");
                         string flightArrTime = jsonBid.Value<string>("arrtime");
 
@@ -117,6 +161,41 @@ namespace FSWire2Twitch
                         string airportStop = jsonArrapt.Value<string>("name");
                         string airportStopICAO = jsonArrapt.Value<string>("icao");
 
+                        listBoxFlightData.Items.Clear();
+
+                        listBoxFlightData.Items.Add("Heading: " + airplaneHeading);
+                        listBoxFlightData.Items.Add("Altitude: " + airplaneAltitude);
+                        listBoxFlightData.Items.Add("Groundspeed: " + airplaneGroundspeed);
+                        listBoxFlightData.Items.Add("Phase: " + airplanePhase);
+                        listBoxFlightData.Items.Add("DistRemain: " + flightDistRemain);
+                        listBoxFlightData.Items.Add("TimeRemain: " + timeRemain);
+                        listBoxFlightData.Items.Add("flightNumber: " + flightNumber);
+                        listBoxFlightData.Items.Add("DepTime: " + flightDepTime);
+                        listBoxFlightData.Items.Add("ArrTime: " + flightArrTime);
+                        listBoxFlightData.Items.Add("Start: " + airportStart);
+                        listBoxFlightData.Items.Add("StartICAO: " + airportStartICAO);
+                        listBoxFlightData.Items.Add("Stop: " + airportStop);
+                        listBoxFlightData.Items.Add("StopICAO: " + airportStopICAO);
+
+                        if (!Directory.Exists(textBoxOutputDir.Text + "/FSWire2Twitch"))
+                        {
+                            Directory.CreateDirectory(textBoxOutputDir.Text + " /FSWire2Twitch");
+                        }
+
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airplaneHeading.txt", airplaneHeading);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airplaneAltitude.txt", airplaneAltitude);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airplaneGroundspeed.txt", airplaneGroundspeed);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airplanePhase.txt", airplanePhase);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/flightDistRemain.txt", flightDistRemain);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/timeRemain.txt", timeRemain);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/flightNumber.txt", flightNumber);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/flightDepTime.txt", flightDepTime);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/flightArrTime.txt", flightArrTime);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airportStart.txt", airportStart);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airportStartICAO.txt", airportStartICAO);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airportStop.txt", airportStop);
+                        System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airportStopICAO.txt", airportStopICAO);
+
                         return;
                     }
 
@@ -124,12 +203,17 @@ namespace FSWire2Twitch
 
             }
 
-            textBoxLog.AppendText("Error: username not found!");
+            textBoxLog.AppendText("Error: username not found!\n" );
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
             ReadJson();
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.facebook.com/sirbenson.official/?fref=ts");
         }
     }
 }
