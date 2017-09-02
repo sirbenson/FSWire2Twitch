@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxUsername = new System.Windows.Forms.TextBox();
@@ -43,6 +44,7 @@
             this.buttonSelectOutput = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -185,11 +187,17 @@
             this.buttonSelectOutput.TabIndex = 12;
             this.buttonSelectOutput.Text = "Select";
             this.buttonSelectOutput.UseVisualStyleBackColor = true;
+            this.buttonSelectOutput.Click += new System.EventHandler(this.buttonSelectOutput_Click);
             // 
             // openFileDialog
             // 
             this.openFileDialog.Filter = "Audio files|*.wav";
             this.openFileDialog.Title = "Please seelct an audio file in .wav format";
+            // 
+            // timer
+            // 
+            this.timer.Interval = 10000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // Form1
             // 
@@ -238,6 +246,7 @@
         private System.Windows.Forms.Button buttonSelectOutput;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Timer timer;
     }
 }
 
