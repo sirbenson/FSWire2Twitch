@@ -2,6 +2,25 @@
 
 A small tool to get your FSWire flight data for twitch. Features: Flightdata as textfile output, play soundfiles on flight actions (Landing, Taxiing..)
 
+The textfile output:
+- airplaneHeading
+- airplaneAltitude
+- airplaneGroundspeed
+- airplanePhase
+- flightDistRemain
+- timeRemain
+- flightNumber
+- flightDepTime
+- flightArrTime
+- airportStart
+- airportStartICAO
+- airportStop
+- airportStopICAO
+
+Update intervall of all files are 10 seconds.
+
+------------------------------------------------
+
 What you need:
 - MS Framework 4.5.2
 - FSWire account
