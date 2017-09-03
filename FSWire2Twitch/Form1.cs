@@ -4,15 +4,62 @@ using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.Diagnostics;
 using System.IO;
+using System.Media;
 
 namespace FSWire2Twitch
 {
     public partial class Form1 : Form
     {
 
+        string lasState = string.Empty;
+        string thisState = string.Empty;
+
         public Form1()
         {
             InitializeComponent();
+            LoadFromFile();
+        }
+
+        private void LoadFromFile()
+        {
+            try
+            {
+                string file = File.ReadAllText("FSWire2Twitch.cfg");
+                string[] fileEntries = file.Split(char.Parse("\n"));
+                textBoxUsername.Text = fileEntries[0];
+                textBoxOutputDir.Text = fileEntries[1];
+                listBoxFlightStatus.Items.AddRange(fileEntries[2].Split(char.Parse(";")));
+            }
+            catch
+            {
+                
+            }
+        }
+
+        private void SaveToFile()
+        {
+            try
+            {
+                if(File.Exists("FSWire2Twitch.cfg"))
+                {
+                    File.Delete("FSWire2Twitch.cfg");
+                }
+
+                string listBoxEntries = "";
+                foreach(string item in listBoxFlightStatus.Items)
+                {
+                    listBoxEntries += item + ";";
+                }
+
+                int length = listBoxEntries.Length > 0 ? listBoxEntries.Length - 1 : 0;
+                listBoxEntries = listBoxEntries.Substring(0, length);
+
+                File.WriteAllText("FSWire2Twitch.cfg", textBoxUsername.Text + "\n" + textBoxOutputDir.Text + "\n" + listBoxEntries);
+            }
+            catch(Exception ex)
+            {
+                textBoxLog.AppendText("Couldn't save confif file: " + ex.Message + "\n");
+            }
         }
 
         private void buttonDeleteStatus_Click(object sender, EventArgs e)
@@ -69,6 +116,9 @@ namespace FSWire2Twitch
                 buttonSelectOutput.Enabled = true;
                 buttonDeleteStatus.Enabled = true;
 
+                lasState = string.Empty;
+                thisState = string.Empty;
+
                 toolStripStatusLabel.Text = "Not running";
 
                 return;
@@ -90,6 +140,8 @@ namespace FSWire2Twitch
             {
                 Directory.CreateDirectory(textBoxOutputDir.Text + " /FSWire2Twitch");
             }
+
+            SaveToFile();
 
             textBoxOutputDir.Enabled = false;
             textBoxUsername.Enabled = false;
@@ -196,6 +248,8 @@ namespace FSWire2Twitch
                         System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airportStop.txt", airportStop);
                         System.IO.File.WriteAllText(textBoxOutputDir.Text + "/FSWire2Twitch/airportStopICAO.txt", airportStopICAO);
 
+                        thisState = airplanePhase;
+
                         return;
                     }
 
@@ -206,9 +260,33 @@ namespace FSWire2Twitch
             textBoxLog.AppendText("Error: username not found!\n" );
         }
 
+        private void SoundByStatus()
+        {
+            if(thisState != lasState)
+            {
+                foreach(string stateSound in listBoxFlightStatus.Items)
+                {
+                    string[] flightStateArr = stateSound.Split(char.Parse("|"));
+                    if(flightStateArr[0] == thisState)
+                    {
+                        lasState = thisState;
+                        try
+                        {
+                            SoundPlayer audio = new SoundPlayer(flightStateArr[1]);
+                            audio.PlaySync();
+                        } catch
+                        {
+                            textBoxLog.AppendText("Could not find audiofile for state " + thisState);
+                        }
+                    }
+                }
+            }
+        }
+
         private void timer_Tick(object sender, EventArgs e)
         {
             ReadJson();
+            SoundByStatus();
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)

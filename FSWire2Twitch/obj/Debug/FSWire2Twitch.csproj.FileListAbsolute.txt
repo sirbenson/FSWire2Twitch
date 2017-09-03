@@ -8,3 +8,4 @@ D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.exe
 D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.pdb
 D:\GitKraken\FSWire2Twitch\FSWire2Twitch\bin\Debug\Newtonsoft.Json.dll
 D:\GitKraken\FSWire2Twitch\FSWire2Twitch\bin\Debug\Newtonsoft.Json.xml
+D:\GitKraken\FSWire2Twitch\FSWire2Twitch\obj\Debug\FSWire2Twitch.csprojResolveAssemblyReference.cache
