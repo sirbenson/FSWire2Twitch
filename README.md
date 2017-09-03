@@ -1,1 +1,13 @@
-FSWire2Twitch
+==== FSWire2Twitch =====
+
+A small tool to get your FSWire flight data for twitch. Features: Flightdata as textfile output, play soundfiles on flight actions (Landing, Taxiing..)
+
+What you need:
+- MS Framework 4.5.2
+- FSWire account
+
+How to:
+
+Start FSWire2Twitch.exe and type your username. Select an output directory. There will be saved all textfiles for your twitch.
+Select the flight state and the sound for the flight state in .wav format
+Click on start and have fun :)
