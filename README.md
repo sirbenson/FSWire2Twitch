@@ -22,7 +22,7 @@ Update intervall of all files are 10 seconds.
 ------------------------------------------------
 
 What you need:
-- MS Framework 4.5.2
+- NET Framework 4.5.2
 - FSWire account
 
 How to:
